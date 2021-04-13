@@ -1,0 +1,4 @@
+
+cd /usr/local/software/kafka
+
+bin/kafka-console-consumer.sh --new-consumer --bootstrap-server localhost:9092 --topic uscapitals --property print.key=true --property key.separator=":" --from-beginning

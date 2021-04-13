@@ -1,0 +1,37 @@
+# It is to be run as follows from the current directory
+# ansible-playbook uninstall-kafka.yml
+---
+- hosts: servers
+  vars:
+
+    reset_java_home : "reset"
+    artifact_download_location: "/root/Ansible/Downloads/"
+
+    common_tarballs:
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc1/kafka_2.12-2.8.0.tgz'}
+
+    tarball_installers:
+      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software/kafka'}
+
+  remote_user: root
+  tasks:
+
+  - name: Setup Download Directories for Artifacts
+    file:
+      path: "{{ artifact_download_location }}/{{ item.name }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+      mode: "{{ item.permissions }}"
+      state: absent
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: Setup Installation Directories
+    file:
+      path: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: '0775'
+      state: absent
+    with_items:
+      - "{{ tarball_installers }}"

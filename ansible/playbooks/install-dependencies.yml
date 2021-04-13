@@ -1,0 +1,21 @@
+# It is to be run as follows from the current directory
+# ansible-playbook install-dependencies.yml
+---
+- hosts: servers
+  vars:
+
+    reset_java_home : "reset"
+
+  remote_user: root
+  tasks:
+  - name: Updates the cache on the server
+    apt:
+      update_cache: 'yes'
+      autoclean: 'yes'
+      autoremove: 'yes'
+
+  - name: Install Required Dependencies on Server
+    apt:
+      name: "{{item}}"
+      state: latest
+    loop: ['openjdk-11-jdk', 'unzip']

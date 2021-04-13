@@ -1,0 +1,18 @@
+
+
+# Keys with numbers as the keys and the square roots as the value
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic freedomzone --property "parse.key=true" --property "key.separator=,"
+
+64,Eight
+100,Ten
+4,Two
+1,One
+
+# https://www.britannica.com/topic/list-of-state-capitals-in-the-United-States-2119210
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic uscapitals --property "parse.key=true" --property "key.separator=:"
+
+Florida:Tallahasee
+Georgia:Atlanta
+Maine:Augusta
+Hawaii:Hononulu

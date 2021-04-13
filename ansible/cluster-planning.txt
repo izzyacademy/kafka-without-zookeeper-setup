@@ -1,0 +1,19 @@
+
+We will provision 5 virtual machines on Azure
+
+VM1 - controller
+
+VM2 - broker
+
+VM3 - controller
+
+VM4 - broker
+
+VM5 - controller, broker
+
+
+cd /usr/local/software/kafka
+
+/usr/local/software/kafka/bin/kafka-topics.sh --create --topic freedomzone --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+
+/usr/local/software/kafka/bin/kafka-topics.sh --create --topic uscapitals --partitions 5 --replication-factor 2 --bootstrap-server localhost:9092
