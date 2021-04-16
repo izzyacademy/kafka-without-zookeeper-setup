@@ -8,15 +8,18 @@
     artifact_download_location: "/root/Ansible/Downloads/"
 
     common_tarballs:
-      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc1/kafka_2.12-2.8.0.tgz'}
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc2/kafka_2.12-2.8.0.tgz'}
 
     tarball_installers:
-      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software/kafka'}
+      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
+
+    log_directories:
+      - { path: '/tmp/kraft-logs'}
 
   remote_user: root
   tasks:
 
-  - name: Setup Download Directories for Artifacts
+  - name: Remove Download Directories for Artifacts
     file:
       path: "{{ artifact_download_location }}/{{ item.name }}"
       group: "{{ item.group }}"
@@ -26,7 +29,7 @@
     with_items:
       - "{{ common_tarballs }}"
 
-  - name: Setup Installation Directories
+  - name: Remove Installation Directories
     file:
       path: "{{ item.dest }}"
       owner: "{{ item.owner }}"
@@ -35,3 +38,11 @@
       state: absent
     with_items:
       - "{{ tarball_installers }}"
+
+  - name: Remove Log Directories
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items:
+      - "{{ log_directories }}"
+

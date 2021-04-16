@@ -9,7 +9,7 @@
     kafka_cluster_id: "sRu_1eUvQQi5EzUeEhIoSQ" # output from ./bin/kafka-storage.sh random-uuid
 
     common_tarballs:
-      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc1/kafka_2.12-2.8.0.tgz'}
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc2/kafka_2.12-2.8.0.tgz'}
 
     tarball_installers:
       - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
@@ -92,7 +92,7 @@
       mode: '0775'
 
   - name: Formatting Storage Directories
-    command: ./bin/kafka-storage.sh format -t {{ kafka_cluster_id }} -c ./config/kraft/software.properties
+    command: ./bin/kafka-storage.sh format --ignore-formatted -t {{ kafka_cluster_id }} -c ./config/kraft/software.properties
     args:
       chdir: /usr/local/software/kafka
 

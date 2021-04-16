@@ -14,6 +14,6 @@ VM5 - controller, broker
 
 cd /usr/local/software/kafka
 
-/usr/local/software/kafka/bin/kafka-topics.sh --create --topic freedomzone --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+/usr/local/software/kafka/bin/kafka-topics.sh --bootstrap-server 10.20.0.10:9092 --create --topic freedomzone --partitions 1 --replication-factor 1
 
-/usr/local/software/kafka/bin/kafka-topics.sh --create --topic uscapitals --partitions 5 --replication-factor 2 --bootstrap-server localhost:9092
+/usr/local/software/kafka/bin/kafka-topics.sh --bootstrap-server 10.20.0.6:9092 --create --topic uscapitals --partitions 5 --replication-factor 2 --bootstrap-server localhost:9092

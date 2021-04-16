@@ -9,7 +9,7 @@
   remote_user: root
   tasks:
 
-  - name: Starting up Apache Kafka
+  - name: Stopping Apache Kafka Brokers and Controllers
     command: ./bin/kafka-server-stop.sh
     args:
       chdir: /usr/local/software/kafka

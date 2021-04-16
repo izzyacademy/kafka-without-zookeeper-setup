@@ -9,7 +9,7 @@
   remote_user: root
   tasks:
 
-  - name: Starting up Apache Kafka
+  - name: Starting up Apache Kafka Cluster Components (Brokers and Controllers)
     command: /usr/local/software/kafka/bin/kafka-server-start.sh -daemon /usr/local/software/kafka/config/kraft/software.properties
     args:
       chdir: /usr/local/software/kafka
