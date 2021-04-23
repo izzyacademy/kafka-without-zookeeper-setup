@@ -13,7 +13,7 @@ cd /usr/local/software/kafka/bin
 
 ./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic worldcapitals --partitions 3 --replication-factor 2
 
-./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic uscapitals --partitions 5 --replication-factor 3
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic uscapitals --partitions 5 --replication-factor 5
 
 ./kafka-topics.sh --bootstrap-server localhost:9092 --list
 
