@@ -1,7 +1,7 @@
 # It is to be run as follows from the current directory
-# ansible-playbook install-dependencies.yml
+# ansible-playbook kraft-mode-install-dependencies.yml
 ---
-- hosts: servers
+- hosts: kraft_servers
   vars:
 
     reset_java_home : "reset"

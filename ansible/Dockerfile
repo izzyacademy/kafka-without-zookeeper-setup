@@ -8,13 +8,16 @@ RUN apt-get -y install aptitude ansible
 RUN apt-get -y install vim
 
 # Generates the RSA Public and Private Key for your Docker Container
-RUN cd ~/ && ssh-keygen -b 2048 -t rsa -N '' -f ansible-admin -C "ansible-admin"
+RUN cd ~/ && ssh-keygen -b 2048 -t rsa -N '' -f ansible-admin -C "kraftdemo"
 
+# Setup the directory for the Configuration files
 RUN mkdir -p /ansible-playground/files
 
+# Copy over all the Ansible playbooks
 COPY playbooks/*.yml /ansible-playground
 
-COPY playbooks/files/* /ansible-playground/files
+# Copy the configuration files used by the Ansible playbooks
+COPY playbooks/files/ /ansible-playground/files/
 
 RUN mkdir -p /etc/ansible/authentication/
 

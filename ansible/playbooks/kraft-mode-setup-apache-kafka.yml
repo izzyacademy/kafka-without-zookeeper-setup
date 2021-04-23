@@ -1,15 +1,15 @@
 # It is to be run as follows from the current directory
-# ansible-playbook setup-apache-kafka.yml
+# ansible-playbook kraft-mode-setup-apache-kafka.yml
 ---
-- hosts: servers
+- hosts: kraft_servers
   vars:
 
     reset_java_home : "reset"
     artifact_download_location: "/root/Ansible/Downloads/"
-    kafka_cluster_id: "sRu_1eUvQQi5EzUeEhIoSQ" # output from ./bin/kafka-storage.sh random-uuid
+    local_file_path: "files/without-zookeeper"
 
     common_tarballs:
-      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://home.apache.org/~vvcephei/kafka-2.8.0-rc2/kafka_2.12-2.8.0.tgz'}
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz'}
 
     tarball_installers:
       - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
@@ -85,14 +85,9 @@
 
   - name: Copy over Configuration Files
     copy:
-      src: "files/node-{{node_id}}.properties"
+      src: "{{ local_file_path }}/node-{{node_id}}.properties"
       dest: "/usr/local/software/kafka/config/kraft/software.properties"
       owner: "kafka"
       group: "oss"
       mode: '0775'
-
-  - name: Formatting Storage Directories
-    command: ./bin/kafka-storage.sh format --ignore-formatted -t {{ kafka_cluster_id }} -c ./config/kraft/software.properties
-    args:
-      chdir: /usr/local/software/kafka
 

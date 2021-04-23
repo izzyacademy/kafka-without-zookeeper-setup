@@ -1,0 +1,33 @@
+
+Resource for Cluster Sizing
+https://eventsizer.io/
+
+# Simple Sizing Based on Data Volume and retention policy
+
+* 18 Megabyte per second ingress
+* Read Fanout of 3 from brokers
+* Retention policy of 7 days
+* 60 percent utilization of CPU
+* 12 disks per broker
+
+Virtual Network for Legacy
+10.27.0.0/16
+
+Subnet for Legacy
+10.27.0.0/20
+
+Virtual Network for Kraft Mode
+10.28.0.0/16
+
+Subnet for for Kraft Mode
+10.28.0.0/20
+
+Documentation to Config Values from KIP 631
+https://cwiki.apache.org/confluence/display/KAFKA/KIP-631%3A+The+Quorum-based+Kafka+Controller
+
+cd /usr/local/software/kafka
+
+/usr/local/software/kafka/bin/kafka-topics.sh --bootstrap-server 10.28.0.10:9092 --create --topic freedomzone --partitions 1 --replication-factor 1
+
+/usr/local/software/kafka/bin/kafka-topics.sh --bootstrap-server 10.28.0.6:9092 --create --topic uscapitals --partitions 5 --replication-factor 2 --bootstrap-server localhost:9092
+

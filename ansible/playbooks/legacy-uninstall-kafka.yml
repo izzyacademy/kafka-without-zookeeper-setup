@@ -1,0 +1,49 @@
+# It is to be run as follows from the current directory
+# ansible-playbook legacy-uninstall-kafka.yml
+---
+- hosts: legacy_servers
+  vars:
+
+    reset_java_home : "reset"
+    artifact_download_location: "/root/Ansible/Downloads/"
+
+    common_tarballs:
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz'}
+
+    tarball_installers:
+      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
+
+    log_directories:
+      - { path: '/tmp/kafka-logs'}
+      - { path: '/var/lib/zookeeper'}
+
+  remote_user: root
+  tasks:
+
+  - name: Remove Download Directories for Artifacts
+    file:
+      path: "{{ artifact_download_location }}/{{ item.name }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+      mode: "{{ item.permissions }}"
+      state: absent
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: Remove Installation Directories
+    file:
+      path: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: '0775'
+      state: absent
+    with_items:
+      - "{{ tarball_installers }}"
+
+  - name: Remove Data Directories for Kafka and Zookeeper
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items:
+      - "{{ log_directories }}"
+

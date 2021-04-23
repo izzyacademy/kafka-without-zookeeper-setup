@@ -1,0 +1,93 @@
+# It is to be run as follows from the current directory
+# ansible-playbook legacy-setup-apache-kafka.yml
+---
+- hosts: legacy_brokers
+  vars:
+
+    reset_java_home : "reset"
+    artifact_download_location: "/root/Ansible/Downloads/"
+    local_file_path: "files/with-zookeeper"
+
+    common_tarballs:
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz'}
+
+    tarball_installers:
+      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
+
+  remote_user: root
+  tasks:
+
+  - name: Set up Groups for Kafka on the Machine
+    group:
+      name: "{{item}}"
+      state: present
+    with_items:
+      - kafka
+      - oss
+
+  - name: Set up Users on the Machine
+    user:
+      name: "{{ item }}"
+      state: present
+      append: yes
+      group: "{{ item }}"
+      groups: oss,kafka
+      create_home: yes
+      shell: '/bin/bash'
+    with_items:
+      - kafka
+
+  - name: Setup Download Directories for Artifacts
+    file:
+      path: "{{ artifact_download_location }}/{{ item.name }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+      mode: "{{ item.permissions }}"
+      state: directory
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: "Fetch Artifacts to Virtual Machines {{ artifact_download_location }}"
+    get_url:
+      url: "{{ item.url }}"
+      dest:  "{{ artifact_download_location }}/{{ item.location }}"
+      mode: "{{ item.permissions }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: Setup Installation Directories
+    file:
+      path: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: '0775'
+      state: directory
+    with_items:
+      - "{{ tarball_installers }}"
+
+  - name: Extract and Install Tarballs on Remote Server
+    unarchive:
+      remote_src: yes
+      mode: '0775'
+      src: "{{ artifact_download_location }}/{{ item.name }}/{{ item.file }}"
+      dest: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items:
+      - "{{ tarball_installers }}"
+
+  - name: Rename Kafka Installation Path to New Location
+    command: mv /usr/local/software/kafka_2.12-2.8.0 /usr/local/software/kafka
+    args:
+      creates: /usr/local/software/kafka/bin/kafka-topics.sh
+
+  - name: Copy over Configuration Files
+    copy:
+      src: "{{ local_file_path }}/broker-{{node_id}}.properties"
+      dest: "/usr/local/software/kafka/config/software.properties"
+      owner: "kafka"
+      group: "oss"
+      mode: '0775'
+

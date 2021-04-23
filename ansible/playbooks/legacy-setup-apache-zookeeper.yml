@@ -1,0 +1,124 @@
+# It is to be run as follows from the current directory
+# ansible-playbook legacy-setup-apache-zookeeper.yml
+---
+- hosts: legacy_zookeepers
+  vars:
+
+    reset_java_home : "reset"
+    artifact_download_location: "/root/Ansible/Downloads/"
+    local_file_path: "files/with-zookeeper"
+
+    common_tarballs:
+      - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz'}
+
+    tarball_installers:
+      - { name: 'kafka', group: 'oss', owner: 'kafka', file: 'kafka_2.12-2.8.0.tgz', dest: '/usr/local/software'}
+
+  remote_user: root
+  tasks:
+
+  - name: Set up Groups for Kafka on the Machine
+    group:
+      name: "{{item}}"
+      state: present
+    with_items:
+      - kafka
+      - oss
+
+  - name: Set up Users on the Machine
+    user:
+      name: "{{ item }}"
+      state: present
+      append: yes
+      group: "{{ item }}"
+      groups: oss,kafka
+      create_home: yes
+      shell: '/bin/bash'
+    with_items:
+      - kafka
+      - kraftdemo
+
+  - name: Setup Download Directories for Artifacts
+    file:
+      path: "{{ artifact_download_location }}/{{ item.name }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+      mode: "{{ item.permissions }}"
+      state: directory
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: "Fetch Artifacts to Virtual Machines {{ artifact_download_location }}"
+    get_url:
+      url: "{{ item.url }}"
+      dest:  "{{ artifact_download_location }}/{{ item.location }}"
+      mode: "{{ item.permissions }}"
+      group: "{{ item.group }}"
+      owner: "{{ item.user }}"
+    with_items:
+      - "{{ common_tarballs }}"
+
+  - name: Setup Installation Directories
+    file:
+      path: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: '0775'
+      state: directory
+    with_items:
+      - "{{ tarball_installers }}"
+
+  - name: Extract and Install Tarballs on Remote Server
+    unarchive:
+      remote_src: yes
+      mode: '0775'
+      src: "{{ artifact_download_location }}/{{ item.name }}/{{ item.file }}"
+      dest: "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items:
+      - "{{ tarball_installers }}"
+
+  - name: Rename Kafka/Zookeeper Installation Path to New Location
+    command: mv /usr/local/software/kafka_2.12-2.8.0 /usr/local/software/kafka
+    args:
+      creates: /usr/local/software/kafka/bin/zookeeper-server-start.sh
+
+  - name: Copy over Zookeeper Configuration Files
+    copy:
+      src: "{{ local_file_path }}/zookeeper-{{node_id}}.properties"
+      dest: "/usr/local/software/kafka/config/software.properties"
+      owner: "kafka"
+      group: "oss"
+      mode: '0775'
+
+  - name: Copy over Setup Script for Zookeeper
+    copy:
+      src: "{{ local_file_path }}/scripts/setup-zookeeper-id.sh"
+      dest: "/usr/local/software/kafka/bin/izzy-setup-zookeeper-id.sh"
+      owner: "kafka"
+      group: "oss"
+      mode: '0775'
+
+  - name: Copy over Setup Script for Java Home
+    copy:
+      src: "{{ local_file_path }}/scripts/setup-java-home.sh"
+      dest: "/usr/local/software/kafka/bin/izzy-setup-java-home.sh"
+      owner: "kafka"
+      group: "oss"
+      mode: '0775'
+
+  - name: Setting up Zookeeper Identifiers on Remote Servers
+    command: /usr/local/software/kafka/bin/izzy-setup-zookeeper-id.sh {{ node_id }}
+    args:
+      creates: /var/lib/zookeeper/myid
+      chdir: /usr/local/software/kafka/bin
+
+  - name: Setting up Java Home on Remote Servers
+    command: /usr/local/software/kafka/bin/izzy-setup-java-home.sh {{ item }}
+    args:
+      creates: /home/{{item}}/.setup-java-home
+      chdir: /usr/local/software/kafka/bin
+    with_items:
+      - kafka
+      - kraftdemo

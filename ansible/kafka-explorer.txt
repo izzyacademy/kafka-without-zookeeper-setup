@@ -1,5 +1,5 @@
 
-# Navigate to BIN directory
+# Navigate to the directory
 cd /usr/local/software/kafka/bin
 
 # On Broker/Controller NodeId=5
@@ -7,16 +7,20 @@ cd /usr/local/software/kafka/bin
 
 ./kafka-broker-api-versions.sh --bootstrap-server localhost:9092
 
-./kafka-topics.sh --bootstrap-server 10.20.0.10:9092 --create --topic freedomzone --partitions 1 --replication-factor 1
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic citypopulation --partitions 1 --replication-factor 1
 
-./kafka-topics.sh --bootstrap-server 10.20.0.6:9092 --create --topic uscapitals --partitions 5 --replication-factor 2
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic countrypopulation --partitions 2 --replication-factor 1
 
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic worldcapitals --partitions 3 --replication-factor 2
 
-./kafka-console-producer.sh --broker-list 10.20.0.6:9092 --topic freedomzone --property "parse.key=true" --property "key.separator=,"
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic uscapitals --partitions 5 --replication-factor 3
 
-64,Eight
-100,Ten
-4,Two
-1,One
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
 
-./kafka-console-consumer.sh --bootstrap-server 10.20.0.6:9092 --topic freedomzone --property print.key=true --property key.separator="," --from-beginning
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe uscapitals
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe worldcapitals
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe countrypopulation
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe citypopulation

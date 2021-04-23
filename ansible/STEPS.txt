@@ -1,0 +1,48 @@
+
+### Required Tools and Ingredients
+
+- Azure Account (Sign up for FREE Account to Get Started)
+- An IDE you are comfortable using (VSCode or Intellij IDEA)
+- Docker Desktop Locally
+- Azure CLI for quick exploration and discovery
+- Good Browser (Edge, Chrome)
+
+### Setup Steps
+
+- Plan the Cluster using the EventSizer.io tool
+- Set up Azure Account
+- Set up Azure Resource Group
+- Set up Virtual Network and Subnet
+
+
+- Run Docker file to Get Public and Private Key Pair
+- Provision the Azure VMSS
+- Configure Public Access for your IP in NIC (ifconfig.me)
+
+### Cluster Setup
+- Node 1 (Controller)
+- Node 2 (Broker)
+- Node 3 (Controller)
+- Node 4 (Broker)
+- Node 5 (Combined - both Controller and Broker)
+
+az login
+az vmss list-instances -g kraftdemo -n kraft
+az vmss list-instance-public-ips -g kraftdemo -n kraft
+az vmss nic list -g kraftdemo --vmss-name kraft -o json | grep privateIpAddress
+az vmss list-instance-connection-info -g kraftdemo -n kraft
+
+### Set up Cluster
+- Update Ansible Config and Inventory Files as Needed
+- Review Configs and Ansible Scripts and Doublecheck
+- Update Kafka Controller and Broker Configs
+- Install Server Dependencies (Ansible Playbook)
+- Set up Kafka (Ansible Playbook)
+- Generate Cluster ID Manually
+- Format Storage Directories (Ansible Playbook)
+- Start Kafka Cluster (Ansible Playbook)
+- Stop Kafka Cluster, if necessary (Ansible Playbook)
+- Uninstall Kafka on VMs, if necessary (Ansible Playbook)
+- Create Sample Topics and verify
+- Publish to Sample Topics
+- Consume from Sample Topics
