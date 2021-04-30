@@ -1,1 +1,1 @@
-## Ansible Automation for Setting up Kafka Cluster without Zookeeper
+## Automation for Setting up Kafka Cluster without Zookeeper
