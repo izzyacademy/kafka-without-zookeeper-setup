@@ -12,7 +12,7 @@ RUN apt-get -y install vim
 # Then the output for the private and public key pairs needs to be kept outside version controll
 # to allow for consistent private key contents for kraftdemo.ppk
 # RUN cp kraftdemo.ppk /etc/ansible/authentication/ansible-admin
-RUN cd ~/ && ssh-keygen -b 2048 -t rsa -N '' -f ansible-admin -C "kraftdemo"
+# RUN cd ~/ && ssh-keygen -b 2048 -t rsa -N '' -f ansible-admin -C "kraftdemo"
 
 # Setup the directory for the Configuration files
 RUN mkdir -p /ansible-playground/files
@@ -29,8 +29,8 @@ COPY ansible.cfg /etc/ansible/ansible.cfg
 
 COPY inventory.ini /etc/ansible/hosts
 
-RUN cp ~/ansible-admin /etc/ansible/authentication/ansible-admin
-# COPY kraftdemo.ppk /etc/ansible/authentication/ansible-admin
+# RUN cp ~/ansible-admin /etc/ansible/authentication/ansible-admin
+COPY kraftdemo.ppk /etc/ansible/authentication/ansible-admin
 
 RUN chmod -R 0600 /etc/ansible/authentication/*
 
@@ -45,5 +45,3 @@ RUN chmod -R 0600 /etc/ansible/authentication/*
 
 # Delete the Docker Container
 # docker rm ansible_clients
-
-# docker rm ansible_clients && docker build . -t izzyacademy.com/ansible-clients:3.0
