@@ -21,9 +21,9 @@ RUN apt-get -y install vim
 # Build and Tag the Docker image for the Ansible Client
 # docker build . -t izzyacademy.com/ssh-keygen:3.0 -f Keygen.Dockerfile
 
-# Run the Docker Container
+# Run the Docker Container and mount the keys relative directory as a volume
 # On UNIX/Mac OS X
-# docker run --name ssh-keygen -it izzyacademy.com/ssh-keygen:3.0 -v `pwd`/keys:/ansible-keys
+# docker run -v `pwd`/keys:/ansible-keys --name ssh-keygen -it izzyacademy.com/ssh-keygen:3.0 
 
 # On PowerShell
 # docker run --name ssh-keygen -it izzyacademy.com/ssh-keygen:3.0 -v $pwd/keys:/ansible-keys

@@ -29,9 +29,10 @@ COPY ansible.cfg /etc/ansible/ansible.cfg
 
 COPY inventory.ini /etc/ansible/hosts
 
-# RUN cp ~/ansible-admin /etc/ansible/authentication/ansible-admin
-COPY kraftdemo.ppk /etc/ansible/authentication/ansible-admin
+# Copy the private keys to the ansible directory
+COPY keys/kraftdemo /etc/ansible/authentication/ansible-admin
 
+# Change the permissions to make it compatible
 RUN chmod -R 0600 /etc/ansible/authentication/*
 
 # Build and Tag the Docker image for the Ansible Client
