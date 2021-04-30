@@ -16,6 +16,7 @@
 
 
 - Run Docker file to Get Public and Private Key Pair
+- Keep PPK in same directory as Dockerfile
 - Provision the Azure VMSS
 - Configure Public Access for your IP in NIC (ifconfig.me)
 
