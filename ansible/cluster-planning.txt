@@ -2,4 +2,8 @@
 
 Sizing the Cluster
 
-
+- Node 1 (Controller)
+- Node 2 (Broker)
+- Node 3 (Controller)
+- Node 4 (Broker)
+- Node 5 (Combined - both Controller and Broker)
