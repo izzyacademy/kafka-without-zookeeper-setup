@@ -2,6 +2,7 @@
 
 Sizing the Cluster
 
+<<<<<<< HEAD
 Resource for Cluster Sizing
 https://eventsizer.io/
 
@@ -15,3 +16,10 @@ https://eventsizer.io/
 
 5 Node Kraft Cluster
 
+=======
+- Node 1 (Controller)
+- Node 2 (Broker)
+- Node 3 (Controller)
+- Node 4 (Broker)
+- Node 5 (Combined - both Controller and Broker)
+>>>>>>> b5a91c16482184d91d6adbe56826a1a2cac90401

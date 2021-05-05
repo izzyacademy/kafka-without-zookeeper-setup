@@ -13,3 +13,8 @@ ssh-keygen -b 2048 -t rsa -N '' -f kraftdemo -C "kraftdemo"
 # Change the Permissions
 chmod -R 0600 kraftdemo*
 
+# You can delete the keys using this command if you need to reset and start from scratch
+
+rm kraftdemo*
+
+
