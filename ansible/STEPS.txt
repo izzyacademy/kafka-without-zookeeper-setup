@@ -27,6 +27,7 @@
 - Node 4 (Broker)
 - Node 5 (Combined - both Controller and Broker)
 
+az logout
 az login
 az vmss list-instances -g kraftdemo -n kraft
 az vmss list-instance-public-ips -g kraftdemo -n kraft
@@ -35,8 +36,8 @@ az vmss list-instance-connection-info -g kraftdemo -n kraft
 
 ### Set up Cluster
 - Update Ansible Config and Inventory Files as Needed
-- Review Configs and Ansible Scripts and Doublecheck
-- Update Kafka Controller and Broker Configs
+- Review Kafka Configs and Ansible Scripts and Doublecheck
+- Update Kafka Controller and Broker Configs As Needed
 - Install Server Dependencies (Ansible Playbook)
 - Set up Kafka (Ansible Playbook)
 - Generate Cluster ID Manually

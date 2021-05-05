@@ -2,4 +2,16 @@
 
 Sizing the Cluster
 
+Resource for Cluster Sizing
+https://eventsizer.io/
+
+# Simple Sizing Based on Data Volume and retention policy
+
+* 18 Megabyte per second ingress
+* Read Fanout of 3 from brokers
+* Retention policy of 7 days
+* 60 percent utilization of CPU
+* 12 disks per broker
+
+5 Node Kraft Cluster
 
