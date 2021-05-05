@@ -7,7 +7,7 @@
     reset_java_home : "reset"
     artifact_download_location: "/root/Ansible/Downloads/"
     local_file_path: "files/without-zookeeper"
-    kafka_cluster_id: "_ZoYWiLdT4SvNT8Zwz5Cdw" # output from /bin/kafka-storage.sh random-uuid
+    kafka_cluster_id: "S2IJh7ozSsuE71h5uuGXzg" # output from /bin/kafka-storage.sh random-uuid
 
     common_tarballs:
       - { name : 'kafka', group : 'oss', user : 'root', permissions : '0775', location : 'kafka', url : 'https://downloads.apache.org/kafka/2.8.0/kafka_2.12-2.8.0.tgz'}

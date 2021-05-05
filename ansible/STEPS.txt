@@ -40,7 +40,7 @@ az vmss list-instance-connection-info -g kraftdemo -n kraft
 - Update Kafka Controller and Broker Configs As Needed
 - Install Server Dependencies (Ansible Playbook)
 - Set up Kafka (Ansible Playbook)
-- Generate Cluster ID Manually
+- Generate Cluster ID Manually  /usr/local/software/kafka/bin/kafka-storage.sh random-uuid
 - Format Storage Directories (Ansible Playbook)
 - Start Kafka Cluster (Ansible Playbook)
 - Stop Kafka Cluster, if necessary (Ansible Playbook)
