@@ -1,0 +1,18 @@
+# It is to be run as follows from the current directory
+# ansible-playbook kraft-mode-check-listening-sockets.yml
+---
+- hosts: kraft_servers
+  vars:
+
+    reset_java_home : "reset"
+
+  remote_user: root
+  tasks:
+  - name: Check for Listening Sockets
+    command: /bin/netstat -lt
+    register: output
+    args:
+      chdir: /usr/local/software/kafka/logs
+
+  - debug: var=output.stdout_lines
+
