@@ -12,7 +12,7 @@
     command: /bin/netstat -lt
     register: output
     args:
-      chdir: /usr/local/software/kafka/logs
+      chdir: /usr/local
 
   - debug: var=output.stdout_lines
 

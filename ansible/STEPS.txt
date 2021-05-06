@@ -45,6 +45,9 @@ az vmss list-instance-connection-info -g kraftdemo -n kraft
 - Start Kafka Cluster (Ansible Playbook)
 - Stop Kafka Cluster, if necessary (Ansible Playbook)
 - Uninstall Kafka on VMs, if necessary (Ansible Playbook)
-- Create Sample Topics and verify
+- Create Sample Topics and verify cluster (sanity checks)
+
+
 - Publish to Sample Topics
 - Consume from Sample Topics
+- Check out new features in Kafka 2.8.0
