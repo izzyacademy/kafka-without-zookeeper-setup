@@ -3,9 +3,18 @@
 cd /usr/local/software/kafka/bin
 
 # On Broker/Controller NodeId=5
+
 ./kafka-cluster.sh cluster-id --bootstrap-server localhost:9092
 
+./kafka-log-dirs.sh --describe --bootstrap-server localhost:9092
+
+./kafka-storage.sh info -c ../config/kraft/software.properties
+
 ./kafka-broker-api-versions.sh --bootstrap-server localhost:9092
+
+./kafka-metadata-shell.sh  --snapshot /tmp/kraft-logs/@metadata-0/00000000000000000000.log
+
+# Then explore the following metadata, if present : brokers  local  metadataQuorum  topicIds  topics
 
 ./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic citypopulation --partitions 1 --replication-factor 1
 
@@ -24,3 +33,7 @@ cd /usr/local/software/kafka/bin
 ./kafka-topics.sh --bootstrap-server localhost:9092 --describe countrypopulation
 
 ./kafka-topics.sh --bootstrap-server localhost:9092 --describe citypopulation
+
+./kafka-metadata-shell.sh  --snapshot /tmp/kraft-logs/@metadata-0/00000000000000000000.log
+
+# Then explore the following metadata, if present : brokers  local  metadataQuorum  topicIds  topics
